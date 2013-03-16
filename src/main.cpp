@@ -791,6 +791,14 @@ bool CTxMemPool::accept(CValidationState &state, CTransaction &tx, bool fCheckIn
         EraseFromWallets(ptxOld->GetHash());
     SyncWithWallets(hash, tx, NULL, true);
 
+    BOOST_FOREACH (const CTxOut&txout, tx.vout)
+    {
+        printf( "OpenMicroPayments: Accepted output %s %"PRI64d" %s\n", 
+            hash.ToString().c_str(),
+            txout.nValue, 
+            txout.scriptPubKey.ToString().c_str() );
+    }
+
     printf("CTxMemPool::accept() : accepted %s (poolsz %"PRIszu")\n",
            hash.ToString().substr(0,10).c_str(),
            mapTx.size());
